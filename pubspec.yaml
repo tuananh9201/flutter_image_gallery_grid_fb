@@ -2,7 +2,7 @@ name: image_gallery_grid_fb
 description: package image gallery like facebook post
 version: 1.0.0
 author: tuananh9201@gmail.com
-homepage:
+homepage: https://github.com/tuananh9201/flutter_image_gallery_grid_fb.git
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
