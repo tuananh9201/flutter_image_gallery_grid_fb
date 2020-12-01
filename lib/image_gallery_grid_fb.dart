@@ -2,7 +2,6 @@ library image_gallery_grid_fb;
 
 import 'package:flutter/material.dart';
 import './gallery_item_thumbnail.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class GalleryImageGridFb extends StatefulWidget {
   final List<String> imageUrls;
@@ -24,60 +23,52 @@ class _GalleryImageGridFbState extends State<GalleryImageGridFb> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.all(10),
-        child: galleryItems.isEmpty
-            ? getEmptyWidget()
-            : Container(
+      padding: EdgeInsets.all(4),
+      child: galleryItems.isEmpty
+          ? getEmptyWidget()
+          : FittedBox(
+              fit: BoxFit.scaleDown,
+              child: SizedBox(
+                height: 400,
+                width: MediaQuery.of(context).size.width,
                 child: Column(
                   children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        padding: EdgeInsets.all(10.0),
-                        child: CachedNetworkImage(
-                          fit: BoxFit.cover,
-                          imageUrl: firstItem.imageUrl,
-                          height: 100.0,
-                          width: double.infinity,
-                          placeholder: (context, url) =>
-                              Center(child: CircularProgressIndicator()),
-                          errorWidget: (context, url, error) => Text("ERROR"),
-                        ),
+                    Container(
+                      height: 150,
+                      width: double.infinity,
+                      margin: EdgeInsets.only(bottom: 8),
+                      child: GalleryItemThumbnail(
+                        galleryItem: firstItem,
+                        onTap: widget.onTap,
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: GridView.builder(
-                          primary: false,
-                          itemCount:
-                              galleryItems.length > 3 ? 3 : galleryItems.length,
-                          padding: EdgeInsets.all(0),
-                          semanticChildCount: 1,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  mainAxisSpacing: 0,
-                                  crossAxisSpacing: 5),
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext context, int index) {
-                            return ClipRRect(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
-                                // if have less than 4 image w build GalleryItemThumbnail
-                                // if have mor than 4 build image number 3 with number for other images
-                                child: galleryItems.length > 3 && index == 2
-                                    ? buildImageNumbers(index)
-                                    : GalleryItemThumbnail(
-                                        galleryItem: galleryItems[index],
-                                        onTap: () {
-                                          widget.onTap();
-                                        },
-                                      ));
-                          }),
+                    GridView.builder(
+                      primary: false,
+                      itemCount:
+                          galleryItems.length > 2 ? 2 : galleryItems.length,
+                      padding: EdgeInsets.all(0),
+                      semanticChildCount: 1,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 0,
+                          crossAxisSpacing: 5),
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int index) {
+                        return galleryItems.length > 2 && index == 1
+                            ? buildImageNumbers(index)
+                            : GalleryItemThumbnail(
+                                galleryItem: galleryItems[index],
+                                onTap: () {
+                                  widget.onTap();
+                                },
+                              );
+                      },
                     )
                   ],
                 ),
-              ));
+              ),
+            ),
+    );
   }
 
   // clear and build list
@@ -96,7 +87,6 @@ class _GalleryImageGridFbState extends State<GalleryImageGridFb> {
     });
   }
 
-  // build image with number for other images
   Widget buildImageNumbers(int index) {
     return GestureDetector(
       onTap: () {
@@ -110,6 +100,7 @@ class _GalleryImageGridFbState extends State<GalleryImageGridFb> {
             galleryItem: galleryItems[index],
           ),
           Container(
+            height: 150,
             color: Colors.black.withOpacity(.7),
             child: Center(
               child: Text(
@@ -124,8 +115,6 @@ class _GalleryImageGridFbState extends State<GalleryImageGridFb> {
   }
 
   Widget getEmptyWidget() {
-    /// reference
-    /// https://stackoverflow.com/a/55796929/2172590
-    return Text("SHIT");
+    return SizedBox.shrink();
   }
 }

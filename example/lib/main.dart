@@ -30,8 +30,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
             "https://mikihome-listing.s3-ap-southeast-1.amazonaws.com/s3url_3045b488-1bae-11eb-b97f-62c21a3cbd5e_33dd4ab6-1bae-11eb-a7b7-a20f5861fd9f_2808919469209983.jpg",
             "https://mikihome-listing.s3-ap-southeast-1.amazonaws.com/s3url_3045b488-1bae-11eb-b97f-62c21a3cbd5e_356290a8-1bae-11eb-a7b7-a20f5861fd9f_2808920092543254.jpg"
           ],
+          onTap: () {
+            print("OK");
+          },
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
